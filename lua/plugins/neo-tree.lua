@@ -6,6 +6,7 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim",
 	},
+	init = function() end,
 	config = function()
 		require("neo-tree").setup({
 			filesystem = {
@@ -24,6 +25,7 @@ return {
 					enabled = true,
 					leave_dirs_open = false,
 				},
+				hijack_netrw_behavior = "open_current",
 			},
 			window = {
 				width = 55,
@@ -36,6 +38,8 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>t", ":Neotree filesystem reveal left<CR>", { desc = "Neotree: reveal" })
+		-- vim.keymap.set("n", "<leader>t", ":Neotree filesystem reveal left<CR>", { desc = "Neotree: reveal" })
+
+		vim.cmd(":Neotree reveal filesystem")
 	end,
 }
