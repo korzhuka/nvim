@@ -1,7 +1,7 @@
 return {
-	-- {
-	-- 	"tpope/vim-fugitive",
-	-- },
+	{
+		"tpope/vim-fugitive",
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -22,6 +22,25 @@ return {
 				":Gitsigns toggle_current_line_blame<CR>",
 				{ desc = "Gitsigns toggle blame" }
 			)
+		end,
+	},
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+
+			"nvim-telescope/telescope.nvim",
+			"ibhagwan/fzf-lua",
+		},
+		config = function()
+			require("neogit").setup({
+				kind = "split",
+				integrations = {
+					telescope = true,
+					diffview = true,
+				},
+			})
 		end,
 	},
 }
