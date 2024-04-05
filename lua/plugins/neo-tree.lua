@@ -20,9 +20,19 @@ return {
 						"vendor",
 					},
 				},
+				follow_current_file = {
+					enabled = true,
+					leave_dirs_open = false,
+				},
 			},
 			window = {
 				width = 55,
+			},
+			buffers = {
+				follow_current_file = {
+					enabled = true,
+					leave_dirs_open = false,
+				},
 			},
 		})
 
