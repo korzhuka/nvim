@@ -5,7 +5,7 @@ return {
 		require("toggleterm").setup({
 			mode = "n",
 			insert_mappings = false,
-			open_mapping = "<leader>t",
+			open_mapping = "<leader>T",
 			direction = "float",
 		})
 	end,
