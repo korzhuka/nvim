@@ -20,6 +20,7 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			yaml = { "prettier" },
+			go = { "goimports" },
 			["_"] = { "trim_whitespace" },
 		},
 	},
