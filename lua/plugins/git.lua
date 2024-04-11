@@ -35,7 +35,6 @@ return {
 		},
 		config = function()
 			require("neogit").setup({
-				kind = "split",
 				integrations = {
 					telescope = true,
 					diffview = true,
