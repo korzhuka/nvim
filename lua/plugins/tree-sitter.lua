@@ -10,5 +10,6 @@ return {
 				indent = { enable = true },
 			})
 		end,
+		vasia = true,
 	},
 }
