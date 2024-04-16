@@ -21,7 +21,7 @@ return {
 			local ignore_list = {
 				".git/",
 				"vendor/",
-				"node_nodules/",
+				"node_modules/",
 				".idea/",
 				".DS_Store/",
 			}

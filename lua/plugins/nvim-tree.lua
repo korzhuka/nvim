@@ -35,7 +35,7 @@ return {
 					},
 				},
 			},
-			filters = { custom = { "^.git$" } },
+			filters = { custom = { "^.git$", "node_modules$" } },
 		})
 
 		require("nvim-tree.api").tree.open()

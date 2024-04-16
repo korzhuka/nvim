@@ -32,8 +32,11 @@ return {
 		},
 		config = function()
 			local on_attach = function(_, bufnr)
-				local map = function(keys, func, desc)
-					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+				local map = function(keys, func, desc, mode)
+					if mode == nil then
+						mode = "n"
+					end
+					vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 				end
 
 				map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
@@ -46,6 +49,9 @@ return {
 				map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 				map("K", vim.lsp.buf.hover, "Hover Documentation")
+
+				map("<C-p>", vim.lsp.buf.signature_help, "Signature help")
+				map("<C-p>", vim.lsp.buf.signature_help, "Signature help", "i")
 			end
 
 			local fix_gopls = function()
