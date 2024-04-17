@@ -22,10 +22,6 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-			-- Useful status updates for LSP.
-			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-			{ "j-hui/fidget.nvim", opts = {} },
-
 			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
 			-- used for completion, annotations and signatures of Neovim apis
 			{ "folke/neodev.nvim", opts = {} },
@@ -55,14 +51,8 @@ return {
 			end
 
 			local fix_gopls = function()
-				-- This is fixes gopls issues for exeuting `go get` https://github.com/neovim/nvim-lspconfig/issues/2733
-
-				-- loading module to provide config for a server following steps from guide here
-				-- https://github.com/neovim/nvim-lspconfig/blob/ede4114e1fd41acb121c70a27e1b026ac68c42d6/doc/lspconfig.txt#L326
 				local configs = require("lspconfig.configs")
 
-				-- copy paste from
-				-- https://github.com/neovim/nvim-lspconfig/blob/ede4114e1fd41acb121c70a27e1b026ac68c42d6/lua/lspconfig/server_configurations/gopls.lua
 				local util = require("lspconfig.util")
 				local async = require("lspconfig.async")
 				-- -> the following line fixes it - mod_cache initially set to value that you've got from `go env GOMODCACHE` command
@@ -188,7 +178,7 @@ return {
 			local _augroups = {}
 			local get_augroup = function(client)
 				if not _augroups[client.id] then
-					local group_name = "kickstart-lsp-format-" .. client.name
+					local group_name = "lsp-format-" .. client.name
 					local id = vim.api.nvim_create_augroup(group_name, { clear = true })
 					_augroups[client.id] = id
 				end
