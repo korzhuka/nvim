@@ -1,8 +1,5 @@
 return {
 	{
-		"tpope/vim-fugitive",
-	},
-	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
 			require("gitsigns").setup({
@@ -13,15 +10,8 @@ return {
 					topdelete = { text = "‾" },
 					changedelete = { text = "~" },
 				},
+				current_line_blame = true,
 			})
-
-			vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { desc = "Gitsigns previu" })
-			vim.keymap.set(
-				"n",
-				"<leader>gt",
-				":Gitsigns toggle_current_line_blame<CR>",
-				{ desc = "Gitsigns toggle blame" }
-			)
 		end,
 	},
 	{
@@ -40,6 +30,23 @@ return {
 					diffview = true,
 				},
 			})
+
+			vim.keymap.set("n", "<leader>g", function()
+				local neogit = require("neogit")
+				neogit.open()
+			end, { desc = "Show NeoGit" })
 		end,
+	},
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		-- lazy, only load diffview by these commands
+		cmd = {
+			"DiffviewFileHistory",
+			"DiffviewOpen",
+			"DiffviewToggleFiles",
+			"DiffviewFocusFiles",
+			"DiffviewRefresh",
+		},
 	},
 }
