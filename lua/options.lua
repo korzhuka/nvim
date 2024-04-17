@@ -76,6 +76,3 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 vim.keymap.set("n", "<leader>w", ":update<CR>", { desc = "Save current buffer" })
-
-vim.keymap.set("n", "<leader>nt", ":tabNext<CR>", { desc = "Move to the next tab" })
-vim.keymap.set("n", "<leader>np", ":tabprevious<CR>", { desc = "Move to the previous tab" })
