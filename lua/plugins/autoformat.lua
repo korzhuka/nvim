@@ -6,7 +6,7 @@ return {
 		{
 			"<leader>f",
 			function()
-				require("conform").format({ --[[ async = true,  ]]
+				require("conform").format({
 					lsp_fallback = true,
 				})
 			end,
@@ -21,6 +21,7 @@ return {
 			lua = { "stylua" },
 			yaml = { "prettier" },
 			go = { "goimports" },
+			javascript = { "prettier" },
 			["_"] = { "trim_whitespace" },
 		},
 	},
