@@ -154,23 +154,19 @@ return {
 			lspconfig.terraformls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
+				single_file_support = false,
 			})
 
 			lspconfig.tsserver.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
+				single_file_support = false,
 			})
 
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-
-			local format_is_enabled = true
-			vim.api.nvim_create_user_command("KickstartFormatToggle", function()
-				format_is_enabled = not format_is_enabled
-				print("Setting autoformatting to: " .. tostring(format_is_enabled))
-			end, {})
 
 			-- Create an augroup that is used for managing our formatting autocmds.
 			--      We need one augroup per client to make sure that multiple clients
@@ -190,7 +186,7 @@ return {
 			--
 			-- See `:help LspAttach` for more information about this autocmd event.
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("kickstart-lsp-attach-format", { clear = true }),
+				group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
 				-- This is where we attach the autoformatting for reasonable clients
 				callback = function(args)
 					local client_id = args.data.client_id
@@ -204,9 +200,9 @@ return {
 
 					-- Tsserver usually works poorly. Sorry you work with bad languages
 					-- You can remove this line if you know what you"re doing :)
-					if client.name == "tsserver" then
-						return
-					end
+					-- if client.name == "tsserver" then
+					-- 	return
+					-- end
 
 					if client and client.server_capabilities.documentHighlightProvider then
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -226,10 +222,6 @@ return {
 						group = get_augroup(client),
 						buffer = bufnr,
 						callback = function()
-							if not format_is_enabled then
-								return
-							end
-
 							vim.lsp.buf.format({
 								async = false,
 								filter = function(c)
