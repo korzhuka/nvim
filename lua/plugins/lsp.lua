@@ -203,7 +203,11 @@ return {
 						usePlaceholders = true,
 						analyses = {
 							unusedparams = true,
+							appends = true,
+							shadow = true,
+							useany = true,
 						},
+						symbolScope = "workspace",
 					},
 				},
 			})
