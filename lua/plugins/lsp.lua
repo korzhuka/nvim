@@ -120,7 +120,7 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			"folke/neodev.nvim",
+			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
 			fix_gopls()
