@@ -32,10 +32,7 @@ return {
 					end,
 				},
 
-				mapping = cmp.mapping.preset.insert({
-					["<Down>"] = cmp.mapping(function() end),
-					["<Up>"] = cmp.mapping(function() end),
-
+				mapping = cmp.mapping({
 					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
 					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
