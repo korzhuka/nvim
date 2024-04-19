@@ -34,6 +34,12 @@ return {
 			filters = { custom = { "^.git$", "node_modules$" } },
 		})
 
-		require("nvim-tree.api").tree.open()
+		local nvim_tree = require("nvim-tree.api")
+		vim.keymap.set("n", "<leader>ff", function()
+			nvim_tree.tree.find_file()
+			nvim_tree.tree.focus()
+		end, { desc = "[F]ind [f] file in NvimTree" })
+
+		nvim_tree.tree.open()
 	end,
 }
