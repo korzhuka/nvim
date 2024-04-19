@@ -23,7 +23,7 @@ return {
 						vim.keymap.set(mode, l, r, opts)
 					end
 
-					map("n", "]h", function()
+					map("n", "]c", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "]c", bang = true })
 						else
@@ -31,7 +31,7 @@ return {
 						end
 					end, { desc = "Next [H]unk " })
 
-					map("n", "[h", function()
+					map("n", "[c", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "[c", bang = true })
 						else
