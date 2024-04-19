@@ -1,3 +1,103 @@
+local fix_gopls = function()
+	local configs = require("lspconfig.configs")
+
+	local util = require("lspconfig.util")
+	local async = require("lspconfig.async")
+	-- -> the following line fixes it - mod_cache initially set to value that you've got from `go env GOMODCACHE` command
+	local mod_cache = "/root/go/pkg/mod"
+
+	-- setting the config for gopls, the contents below is also copy-paste from
+	-- https://github.com/neovim/nvim-lspconfig/blob/ede4114e1fd41acb121c70a27e1b026ac68c42d6/lua/lspconfig/server_configurations/gopls.lua
+	configs.gopls = {
+		default_config = {
+			cmd = { "gopls" },
+			filetypes = { "go", "gomod", "gowork", "gotmpl" },
+			root_dir = function(fname)
+				-- see: https://github.com/neovim/nvim-lspconfig/issues/804
+				if not mod_cache then
+					local result = async.run_command("go env GOMODCACHE")
+					if result and result[1] then
+						mod_cache = vim.trim(result[1])
+					end
+				end
+				if fname:sub(1, #mod_cache) == mod_cache then
+					local clients = vim.lsp.get_active_clients({ name = "gopls" })
+					if #clients > 0 then
+						return clients[#clients].config.root_dir
+					end
+				end
+				return util.root_pattern("go.work")(fname) or util.root_pattern("go.mod", ".git")(fname)
+			end,
+			single_file_support = true,
+		},
+		docs = {
+			description = [[
+  https://github.com/golang/tools/tree/master/gopls
+
+  Google's lsp server for golang.
+  ]],
+			default_config = {
+				root_dir = [[root_pattern("go.work", "go.mod", ".git")]],
+			},
+		},
+	}
+end
+
+local function enable_lsp_formatter()
+	local _augroups = {}
+	local get_augroup = function(client)
+		if not _augroups[client.id] then
+			local group_name = "lsp-format-" .. client.name
+			local id = vim.api.nvim_create_augroup(group_name, { clear = true })
+			_augroups[client.id] = id
+		end
+
+		return _augroups[client.id]
+	end
+
+	vim.api.nvim_create_autocmd("LspAttach", {
+		group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
+		-- This is where we attach the autoformatting for reasonable clients
+		callback = function(args)
+			local client_id = args.data.client_id
+			local client = vim.lsp.get_client_by_id(client_id)
+			local bufnr = args.buf
+
+			-- Only attach to clients that support document formatting
+			if not client.server_capabilities.documentFormattingProvider then
+				return
+			end
+
+			if client and client.server_capabilities.documentHighlightProvider then
+				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+					buffer = args.buf,
+					callback = vim.lsp.buf.document_highlight,
+				})
+
+				vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+					buffer = args.buf,
+					callback = vim.lsp.buf.clear_references,
+				})
+			end
+
+			-- Create an autocmd that will run *before* we save the buffer.
+			--  Run the formatting command for the LSP that has just attached.
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = get_augroup(client),
+				buffer = bufnr,
+				callback = function()
+					vim.lsp.buf.format({
+						async = false,
+						filter = function(c)
+							return c.id == client.id
+						end,
+					})
+				end,
+			})
+		end,
+	})
+end
+
 return {
 	{
 		"williamboman/mason.nvim",
@@ -17,16 +117,15 @@ return {
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		dependencies = {
-			-- Automatically install LSPs and related tools to stdpath for Neovim
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-
-			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-			-- used for completion, annotations and signatures of Neovim apis
-			{ "folke/neodev.nvim", opts = {} },
+			"folke/neodev.nvim",
 		},
 		config = function()
+			fix_gopls()
+			enable_lsp_formatter()
+
 			local on_attach = function(_, bufnr)
 				local map = function(keys, func, desc, mode)
 					if mode == nil then
@@ -50,52 +149,10 @@ return {
 				map("<C-p>", vim.lsp.buf.signature_help, "Signature help", "i")
 			end
 
-			local fix_gopls = function()
-				local configs = require("lspconfig.configs")
-
-				local util = require("lspconfig.util")
-				local async = require("lspconfig.async")
-				-- -> the following line fixes it - mod_cache initially set to value that you've got from `go env GOMODCACHE` command
-				local mod_cache = "/root/go/pkg/mod"
-
-				-- setting the config for gopls, the contents below is also copy-paste from
-				-- https://github.com/neovim/nvim-lspconfig/blob/ede4114e1fd41acb121c70a27e1b026ac68c42d6/lua/lspconfig/server_configurations/gopls.lua
-				configs.gopls = {
-					default_config = {
-						cmd = { "gopls" },
-						filetypes = { "go", "gomod", "gowork", "gotmpl" },
-						root_dir = function(fname)
-							-- see: https://github.com/neovim/nvim-lspconfig/issues/804
-							if not mod_cache then
-								local result = async.run_command("go env GOMODCACHE")
-								if result and result[1] then
-									mod_cache = vim.trim(result[1])
-								end
-							end
-							if fname:sub(1, #mod_cache) == mod_cache then
-								local clients = vim.lsp.get_active_clients({ name = "gopls" })
-								if #clients > 0 then
-									return clients[#clients].config.root_dir
-								end
-							end
-							return util.root_pattern("go.work")(fname) or util.root_pattern("go.mod", ".git")(fname)
-						end,
-						single_file_support = true,
-					},
-					docs = {
-						description = [[
-  https://github.com/golang/tools/tree/master/gopls
-
-  Google's lsp server for golang.
-  ]],
-						default_config = {
-							root_dir = [[root_pattern("go.work", "go.mod", ".git")]],
-						},
-					},
-				}
-			end
-
-			fix_gopls()
+			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -161,76 +218,6 @@ return {
 				on_attach = on_attach,
 				capabilities = capabilities,
 				single_file_support = false,
-			})
-
-			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-
-			-- Create an augroup that is used for managing our formatting autocmds.
-			--      We need one augroup per client to make sure that multiple clients
-			--      can attach to the same buffer without interfering with each other.
-			local _augroups = {}
-			local get_augroup = function(client)
-				if not _augroups[client.id] then
-					local group_name = "lsp-format-" .. client.name
-					local id = vim.api.nvim_create_augroup(group_name, { clear = true })
-					_augroups[client.id] = id
-				end
-
-				return _augroups[client.id]
-			end
-
-			-- Whenever an LSP attaches to a buffer, we will run this function.
-			--
-			-- See `:help LspAttach` for more information about this autocmd event.
-			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
-				-- This is where we attach the autoformatting for reasonable clients
-				callback = function(args)
-					local client_id = args.data.client_id
-					local client = vim.lsp.get_client_by_id(client_id)
-					local bufnr = args.buf
-
-					-- Only attach to clients that support document formatting
-					if not client.server_capabilities.documentFormattingProvider then
-						return
-					end
-
-					-- Tsserver usually works poorly. Sorry you work with bad languages
-					-- You can remove this line if you know what you"re doing :)
-					-- if client.name == "tsserver" then
-					-- 	return
-					-- end
-
-					if client and client.server_capabilities.documentHighlightProvider then
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = args.buf,
-							callback = vim.lsp.buf.document_highlight,
-						})
-
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = args.buf,
-							callback = vim.lsp.buf.clear_references,
-						})
-					end
-
-					-- Create an autocmd that will run *before* we save the buffer.
-					--  Run the formatting command for the LSP that has just attached.
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = get_augroup(client),
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({
-								async = false,
-								filter = function(c)
-									return c.id == client.id
-								end,
-							})
-						end,
-					})
-				end,
 			})
 		end,
 	},
