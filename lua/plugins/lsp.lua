@@ -127,14 +127,12 @@ return {
 						completion = true,
 						hover = true,
 						validate = true,
+						-- Formatting doesn't work
 						format = {
 							enable = true,
 						},
 						schemaStore = {
-							-- Must disable built-in schemaStore support to use
-							-- schemas from SchemaStore.nvim plugin
 							enable = true,
-							-- Avoid TypeError: Cannot read properties of undefined (reading "length")
 							url = "",
 						},
 						schemas = {
