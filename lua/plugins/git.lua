@@ -80,5 +80,19 @@ return {
 	{
 		"sindrets/diffview.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("diffview").setup({})
+
+			local open = true
+			vim.keymap.set("n", "<leader>gd", function()
+				if open then
+					open = false
+					vim.cmd("silent DiffviewOpen")
+				else
+					open = true
+					vim.cmd("silent DiffviewClose")
+				end
+			end, {})
+		end,
 	},
 }
