@@ -43,61 +43,6 @@ local fix_gopls = function()
 	}
 end
 
-local function enable_lsp_formatter()
-	local _augroups = {}
-	local get_augroup = function(client)
-		if not _augroups[client.id] then
-			local group_name = "lsp-format-" .. client.name
-			local id = vim.api.nvim_create_augroup(group_name, { clear = true })
-			_augroups[client.id] = id
-		end
-
-		return _augroups[client.id]
-	end
-
-	vim.api.nvim_create_autocmd("LspAttach", {
-		group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
-		-- This is where we attach the autoformatting for reasonable clients
-		callback = function(args)
-			local client_id = args.data.client_id
-			local client = vim.lsp.get_client_by_id(client_id)
-			local bufnr = args.buf
-
-			-- Only attach to clients that support document formatting
-			if not client.server_capabilities.documentFormattingProvider then
-				return
-			end
-
-			if client and client.server_capabilities.documentHighlightProvider then
-				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-					buffer = args.buf,
-					callback = vim.lsp.buf.document_highlight,
-				})
-
-				vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-					buffer = args.buf,
-					callback = vim.lsp.buf.clear_references,
-				})
-			end
-
-			-- Create an autocmd that will run *before* we save the buffer.
-			--  Run the formatting command for the LSP that has just attached.
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = get_augroup(client),
-				buffer = bufnr,
-				callback = function()
-					vim.lsp.buf.format({
-						async = false,
-						filter = function(c)
-							return c.id == client.id
-						end,
-					})
-				end,
-			})
-		end,
-	})
-end
-
 return {
 	{
 		"williamboman/mason.nvim",
@@ -134,7 +79,6 @@ return {
 		},
 		config = function()
 			fix_gopls()
-			enable_lsp_formatter()
 
 			local on_attach = function(_, bufnr)
 				local map = function(keys, func, desc, mode)
