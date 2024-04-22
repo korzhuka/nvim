@@ -73,7 +73,7 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Save file
-vim.keymap.set("n", "<leader>w", ":update<CR>", { desc = "Save current buffer" })
+vim.keymap.set("n", "<leader>w", ":update<CR>", { desc = "Save current buffer", silent = true })
 
 -- Resize with arrows
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Resize Horizontal Split Down" })
