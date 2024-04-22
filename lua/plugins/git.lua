@@ -1,26 +1,26 @@
 return {
 	{
-		"tpope/vim-fugitive",
-		keys = {
-			{
-				"<leader>g",
-				":vertical G<CR>",
-				desc = "[G]it: Open Status",
-				silent = true,
-			},
-			{
-				"<leader>gP",
-				":G pull<CR>",
-				desc = "[G]it: pull",
-				silent = true,
-			},
-			{
-				"<leader>gp",
-				":G push<CR>",
-				desc = "[G]it: push",
-				silent = true,
-			},
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
 		},
+		config = function()
+			require("neogit").setup({
+				integrations = {
+					diffview = true,
+					telescope = true,
+				},
+			})
+
+			local neogit = require("neogit")
+
+			vim.keymap.set("n", "<leader>g", neogit.open, { silent = true, noremap = true })
+			vim.keymap.set("n", "<leader>gc", ":Neogit commit<CR>", { silent = true, noremap = true })
+			vim.keymap.set("n", "<leader>gp", ":Neogit pull<CR>", { silent = true, noremap = true })
+			vim.keymap.set("n", "<leader>gP", ":Neogit push<CR>", { silent = true, noremap = true })
+			vim.keymap.set("n", "<leader>gb", ":Telescope git_branches<CR>", { silent = true, noremap = true })
+		end,
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -43,7 +43,7 @@ return {
 						vim.keymap.set(mode, l, r, opts)
 					end
 
-					map("n", "]c", function()
+					map("n", "]h", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "]c", bang = true })
 						else
@@ -51,7 +51,7 @@ return {
 						end
 					end, { desc = "Next [H]unk " })
 
-					map("n", "[c", function()
+					map("n", "[h", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "[c", bang = true })
 						else
@@ -61,12 +61,7 @@ return {
 
 					map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage [H]unk " })
 					map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset [H]unk " })
-					map("v", "<leader>hs", function()
-						gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-					end, { desc = "Stage selected [H]unk " })
-					map("v", "<leader>hr", function()
-						gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-					end, { desc = "Reset selected [H]unk " })
+					map("n", "<leader>hd", gitsigns.preview_hunk, { desc = "Preview [H]unk " })
 				end,
 			})
 		end,
