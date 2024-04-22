@@ -1,6 +1,25 @@
 return {
 	{
 		"tpope/vim-fugitive",
+		opts = {},
+		config = true,
+		keys = {
+			{
+				"<leader>g",
+				":vertical G<CR>:vertical resize +25%<CR>",
+				desc = "[G]it: Open Status",
+			},
+			{
+				"<leader>gp",
+				":G push",
+				desc = "[G]it: Push",
+			},
+			{
+				"<leader>gP",
+				":G push",
+				desc = "[G]it: Pull",
+			},
+		},
 	},
 	{
 		"lewis6991/gitsigns.nvim",
