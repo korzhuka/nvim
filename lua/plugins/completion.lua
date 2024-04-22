@@ -1,5 +1,5 @@
 return {
-	{ -- Autocompletion
+	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
@@ -54,10 +54,26 @@ return {
 						end
 					end, { "i", "s" }),
 				}),
+
 				sources = {
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },
 					{ name = "luasnip" },
+				},
+
+				formatting = {
+					fields = { "menu", "abbr", "kind" },
+					format = function(entry, item)
+						local menu_icon = {
+							nvim_lsp = "λ",
+							vsnip = "⋗",
+							buffer = "Ω",
+							path = "🖫",
+						}
+						item.menu = menu_icon[entry.source.name]
+						return item
+					end,
+					expandable_indicator = true,
 				},
 			})
 		end,
