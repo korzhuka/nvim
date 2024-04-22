@@ -10,6 +10,9 @@ return {
 			view = {
 				width = 55,
 			},
+			diagnostics = {
+				enable = true,
+			},
 			renderer = {
 				indent_markers = {
 					enable = true,
