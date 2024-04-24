@@ -1,4 +1,27 @@
 return {
+	-- {
+	-- 	"tpope/vim-fugitive",
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>g",
+	-- 			":vertical G<CR>",
+	-- 			desc = "[G]it: Open Status",
+	-- 			silent = true,
+	-- 		},
+	-- 		{
+	-- 			"<leader>gP",
+	-- 			":G pull<CR>",
+	-- 			desc = "[G]it: pull",
+	-- 			silent = true,
+	-- 		},
+	-- 		{
+	-- 			"<leader>gp",
+	-- 			":G push<CR>",
+	-- 			desc = "[G]it: push",
+	-- 			silent = true,
+	-- 		},
+	-- 	},
+	-- },
 	{
 		"NeogitOrg/neogit",
 		dependencies = {
