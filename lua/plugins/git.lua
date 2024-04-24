@@ -9,7 +9,7 @@ return {
 			require("neogit").setup({
 				integrations = {
 					diffview = true,
-					telescope = false,
+					telescope = true,
 				},
 			})
 
