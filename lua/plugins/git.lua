@@ -15,7 +15,18 @@ return {
 
 			local neogit = require("neogit")
 
-			vim.keymap.set("n", "<leader>g", neogit.open, { silent = true, noremap = true })
+			local show_neogit = true
+			local toggle_neogit = function()
+				if show_neogit then
+					show_neogit = false
+					neogit.open()
+				else
+					show_neogit = true
+					neogit.close()
+				end
+			end
+
+			vim.keymap.set("n", "<leader>g", toggle_neogit, { silent = true, noremap = true })
 			vim.keymap.set("n", "<leader>gc", ":Neogit commit<CR>", { silent = true, noremap = true })
 			vim.keymap.set("n", "<leader>gp", ":Neogit pull<CR>", { silent = true, noremap = true })
 			vim.keymap.set("n", "<leader>gP", ":Neogit push<CR>", { silent = true, noremap = true })
