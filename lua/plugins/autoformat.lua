@@ -19,10 +19,10 @@ return {
 		},
 		formatters_by_ft = {
 			lua = { "stylua" },
-			yaml = { "prettier" },
+			-- yaml = { "prettier" },
 			go = { "goimports" },
 			javascript = { "prettier" },
-			markdown = { "prettier" },
+			-- markdown = { "prettier" },
 
 			["_"] = { "trim_whitespace" },
 		},
