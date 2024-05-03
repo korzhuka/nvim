@@ -76,10 +76,10 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<leader>w", ":update<CR>", { desc = "Save current buffer", silent = true })
 
 -- Resize with arrows
-vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Resize Horizontal Split Down" })
-vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "Resize Horizontal Split Up" })
-vim.keymap.set("n", "<C-Left>", ":vertical resize +2<CR>", { desc = "Resize Vertical Split Down" })
-vim.keymap.set("n", "<C-Right>", ":vertical resize -2<CR>", { desc = "Resize Vertical Split Up" })
+vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Resize Horizontal Split Down", silent = true })
+vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "Resize Horizontal Split Up", silent = true })
+vim.keymap.set("n", "<C-Left>", ":vertical resize +2<CR>", { desc = "Resize Vertical Split Down", silent = true })
+vim.keymap.set("n", "<C-Right>", ":vertical resize -2<CR>", { desc = "Resize Vertical Split Up", silent = true })
 
 -- Visual --
 -- Stay in indent mode
