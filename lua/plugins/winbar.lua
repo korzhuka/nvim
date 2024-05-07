@@ -22,7 +22,6 @@ return {
 
 			exclude_filetype = {
 				"NeogitStatus",
-				"git>COMMIT_EDITMSG",
 				"help",
 				"startify",
 				"dashboard",
