@@ -20,7 +20,6 @@ vim.opt.swapfile = false
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.softtabstop = 0
-vim.o.noexpandtab = true
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -73,7 +72,7 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Save file
-vim.keymap.set("n", "<leader>w", ":update<CR>", { desc = "Save current buffer", silent = true })
+vim.keymap.set("n", "<D-s>", ":update<CR>", { desc = "Save current buffer", silent = true })
 
 -- Resize with arrows
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Resize Horizontal Split Down", silent = true })
