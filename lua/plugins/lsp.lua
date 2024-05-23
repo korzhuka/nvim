@@ -137,6 +137,7 @@ return {
 						-- Formatting doesn't work
 						format = {
 							enable = true,
+							singleQuote = true,
 						},
 						schemaStore = {
 							enable = true,
