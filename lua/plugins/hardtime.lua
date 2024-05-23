@@ -3,6 +3,9 @@ return {
 	dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
 	config = function()
 		require("hardtime").setup({
+			disabled_filetypes = {
+				"NvimTree",
+			},
 			disabled_keys = {
 				["<Up>"] = { "n", "x" },
 				["<Down>"] = { "n", "x" },
