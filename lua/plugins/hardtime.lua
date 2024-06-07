@@ -4,6 +4,7 @@ return {
 	config = function()
 		require("hardtime").setup({
 			disabled_filetypes = {
+				"",
 				"NvimTree",
 			},
 			disabled_keys = {
