@@ -1,37 +1,22 @@
 return {
 	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
+		"SuperBo/fugit2.nvim",
+		opts = {
+			libgit2_path = "/usr/local/opt/libgit2/lib/libgit2.dylib",
+
+			min_width = 150,
+			max_width = "80%",
+			height = "60%",
 		},
-		config = function()
-			require("neogit").setup({
-				integrations = {
-					diffview = true,
-					telescope = true,
-				},
-			})
-
-			local neogit = require("neogit")
-
-			local show_neogit = true
-			local toggle_neogit = function()
-				if show_neogit then
-					show_neogit = false
-					neogit.open()
-				else
-					show_neogit = true
-					neogit.close()
-				end
-			end
-
-			vim.keymap.set("n", "<leader>g", toggle_neogit, { silent = true, noremap = true })
-			vim.keymap.set("n", "<leader>gc", ":Neogit commit<CR>", { silent = true, noremap = true })
-			vim.keymap.set("n", "<leader>gp", ":Neogit pull<CR>", { silent = true, noremap = true })
-			vim.keymap.set("n", "<leader>gP", ":Neogit push<CR>", { silent = true, noremap = true })
-			vim.keymap.set("n", "<leader>gb", ":Telescope git_branches<CR>", { silent = true, noremap = true })
-		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"nvim-lua/plenary.nvim",
+		},
+		cmd = { "Fugit2", "Fugit2Diff", "Fugit2Graph" },
+		keys = {
+			{ "<leader>g", mode = "n", "<cmd>Fugit2<cr>" },
+		},
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -44,6 +29,14 @@ return {
 					topdelete = { text = "‾" },
 					changedelete = { text = "~" },
 				},
+				_signs_staged_enable = true,
+				_signs_staged = {
+					add = { text = "┋ " },
+					change = { text = "┋ " },
+					delete = { text = "﹍" },
+					topdelete = { text = "﹉" },
+					changedelete = { text = "┋ " },
+				},
 				current_line_blame = true,
 				on_attach = function(bufnr)
 					local gitsigns = require("gitsigns")
@@ -54,25 +47,39 @@ return {
 						vim.keymap.set(mode, l, r, opts)
 					end
 
-					map("n", "]h", function()
+					-- Navigation
+					map("n", "]c", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "]c", bang = true })
 						else
 							gitsigns.nav_hunk("next")
 						end
-					end, { desc = "Next [H]unk " })
+					end, { desc = "GitSigns: [N]ext" })
 
-					map("n", "[h", function()
+					map("n", "[c", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "[c", bang = true })
 						else
 							gitsigns.nav_hunk("prev")
 						end
-					end, { desc = "Prev [H]unk " })
+					end, { desc = "GitSigns: [P]rev Hunk" })
 
-					map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage [H]unk " })
-					map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset [H]unk " })
-					map("n", "<leader>hd", gitsigns.preview_hunk, { desc = "Preview [H]unk " })
+					-- Actions
+					map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "GitSigns: [S]tage Hunk" })
+					map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "GitSigns: [R]eset Hunk" })
+
+					map("v", "<leader>hs", function()
+						gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+					end, { desc = "gitsigns: [s]tage hunk" })
+					map("v", "<leader>hr", function()
+						gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+					end, { desc = "GitSigns: [R]eset Hunk" })
+
+					map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "GitSigns: [S]tage Buffer" })
+					map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "GitSigns: [R]eset Buffer" })
+
+					map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "GitSigns: [P]review Hunk" })
+					map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "GitSigns: [U]ndo Hunk" })
 				end,
 			})
 		end,
@@ -84,7 +91,7 @@ return {
 			require("diffview").setup({})
 
 			local open = true
-			vim.keymap.set("n", "<leader>gd", function()
+			vim.keymap.set("n", "<leader>d", function()
 				if open then
 					open = false
 					vim.cmd("silent DiffviewOpen")
