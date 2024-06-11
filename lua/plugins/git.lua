@@ -99,7 +99,7 @@ return {
 					open = true
 					vim.cmd("silent DiffviewClose")
 				end
-			end, {})
+			end, { desc = "Toggle [D]iffview" })
 		end,
 	},
 }
