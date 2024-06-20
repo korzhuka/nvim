@@ -64,6 +64,7 @@ return {
 				"lua_ls",
 				"terraformls",
 				"yamlls",
+				"bash-language-server",
 			},
 		},
 	},
@@ -185,6 +186,12 @@ return {
 			})
 
 			lspconfig.dockerls.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				single_file_support = false,
+			})
+
+			lspconfig.bashls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 				single_file_support = false,
