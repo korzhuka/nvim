@@ -183,6 +183,12 @@ return {
 				capabilities = capabilities,
 				single_file_support = false,
 			})
+
+			lspconfig.dockerls.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				single_file_support = false,
+			})
 		end,
 	},
 }
