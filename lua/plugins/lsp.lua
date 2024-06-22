@@ -64,7 +64,7 @@ return {
 				"lua_ls",
 				"terraformls",
 				"yamlls",
-				"bash-language-server",
+				"bashls",
 			},
 		},
 	},
