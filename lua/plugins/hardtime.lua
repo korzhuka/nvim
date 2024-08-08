@@ -5,6 +5,7 @@ return {
 		require("hardtime").setup({
 			disabled_filetypes = {
 				"",
+				"fugit2-file-tree",
 				"NvimTree",
 			},
 			disabled_keys = {
