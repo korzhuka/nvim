@@ -107,10 +107,9 @@ return {
 
 				map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-				map("<C-k>", vim.lsp.buf.hover, "Hover Documentation")
+				map("K", vim.lsp.buf.hover, "Hover Documentation")
 
-				map("<C-i>", vim.lsp.buf.signature_help, "Signature help")
-				map("<C-i>", vim.lsp.buf.signature_help, "Signature help", "i")
+				map("<C-H>", vim.lsp.buf.signature_help, "Signature help", "i")
 			end
 
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
