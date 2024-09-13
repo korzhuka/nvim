@@ -179,7 +179,7 @@ return {
 				single_file_support = false,
 			})
 
-			lspconfig.tsserver.setup({
+			lspconfig.ts_ls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 				single_file_support = false,
