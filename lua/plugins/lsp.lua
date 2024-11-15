@@ -65,6 +65,7 @@ return {
 				"terraformls",
 				"yamlls",
 				"bashls",
+				"ltex_ls",
 			},
 		},
 	},
@@ -121,6 +122,11 @@ return {
 			local lspconfig = require("lspconfig")
 
 			lspconfig.lua_ls.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
+			lspconfig.ltex.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
