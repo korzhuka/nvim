@@ -65,7 +65,7 @@ return {
 				"terraformls",
 				"yamlls",
 				"bashls",
-				"ltex_ls",
+				"ltex",
 			},
 		},
 	},
