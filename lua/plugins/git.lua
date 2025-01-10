@@ -1,6 +1,7 @@
 return {
 	{
 		"SuperBo/fugit2.nvim",
+		enabled = false,
 		opts = {
 			libgit2_path = "/usr/local/opt/libgit2/lib/libgit2.dylib",
 
@@ -29,6 +30,9 @@ return {
 			"echasnovski/mini.pick",
 		},
 		config = true,
+		keys = {
+			{ "<leader>g", mode = "n", "<cmd>Neogit<cr>", desc = "Neogit" },
+		},
 	},
 	{
 		"lewis6991/gitsigns.nvim",
