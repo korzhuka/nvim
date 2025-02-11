@@ -5,12 +5,7 @@ return {
 		dependencies = {
 			{
 				"L3MON4D3/LuaSnip",
-				build = (function()
-					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-						return
-					end
-					return "make install_jsregexp"
-				end)(),
+				build = "make install_jsregexp",
 				dependencies = {},
 			},
 			"saadparwaiz1/cmp_luasnip",
@@ -18,9 +13,9 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-nvim-lsp-signature-help",
 		},
 		config = function()
-			-- See `:help cmp`
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 			luasnip.config.setup({})
@@ -58,6 +53,8 @@ return {
 
 				sources = {
 					{ name = "nvim_lsp" },
+					{ name = "nvim_lsp_signature_help" },
+					{ name = "path" },
 					{ name = "buffer" },
 					{ name = "luasnip" },
 				},
