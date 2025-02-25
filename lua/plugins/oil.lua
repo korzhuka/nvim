@@ -6,7 +6,7 @@ return {
 		config = function()
 			require("oil").setup()
 
-			vim.keymap.set("n", "~", function()
+			vim.keymap.set("n", "-", function()
 				require("oil").toggle_float(nil)
 			end, { desc = "Toggle Oil" })
 		end,
