@@ -1,48 +1,3 @@
-local fix_gopls = function()
-	local configs = require("lspconfig.configs")
-
-	local util = require("lspconfig.util")
-	local async = require("lspconfig.async")
-	-- -> the following line fixes it - mod_cache initially set to value that you've got from `go env GOMODCACHE` command
-	local mod_cache = "/root/go/pkg/mod"
-
-	-- setting the config for gopls, the contents below is also copy-paste from
-	-- https://github.com/neovim/nvim-lspconfig/blob/ede4114e1fd41acb121c70a27e1b026ac68c42d6/lua/lspconfig/server_configurations/gopls.lua
-	configs.gopls = {
-		default_config = {
-			cmd = { "gopls" },
-			filetypes = { "go", "gomod", "gowork", "gotmpl" },
-			root_dir = function(fname)
-				-- see: https://github.com/neovim/nvim-lspconfig/issues/804
-				if not mod_cache then
-					local result = async.run_command("go env GOMODCACHE")
-					if result and result[1] then
-						mod_cache = vim.trim(result[1])
-					end
-				end
-				if fname:sub(1, #mod_cache) == mod_cache then
-					local clients = vim.lsp.get_active_clients({ name = "gopls" })
-					if #clients > 0 then
-						return clients[#clients].config.root_dir
-					end
-				end
-				return util.root_pattern("go.work")(fname) or util.root_pattern("go.mod", ".git")(fname)
-			end,
-			single_file_support = true,
-		},
-		docs = {
-			description = [[
-  https://github.com/golang/tools/tree/master/gopls
-
-  Google's lsp server for golang.
-  ]],
-			default_config = {
-				root_dir = [[root_pattern("go.work", "go.mod", ".git")]],
-			},
-		},
-	}
-end
-
 return {
 	{
 		"williamboman/mason.nvim",
@@ -80,17 +35,18 @@ return {
 		end,
 	},
 	{
+		"j-hui/fidget.nvim",
+	},
+	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			{ "folke/neodev.nvim", opts = {} },
+			"folke/neodev.nvim",
 		},
 		config = function()
-			fix_gopls()
-
 			local on_attach = function(_, bufnr)
 				local map = function(keys, func, desc, mode)
 					if mode == nil then
@@ -150,8 +106,6 @@ return {
 							url = "",
 						},
 						schemas = {
-							-- ["kubernetes"] = "*.{yaml,yml}",
-							-- JSON & YAML schemas http://schemastore.org/json/
 							["https://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
 							["https://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
 						},
@@ -162,7 +116,7 @@ return {
 			lspconfig.gopls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				single_file_support = false,
+				root_dir = lspconfig.util.root_pattern("go.mod", ".git", "."),
 				settings = {
 					gopls = {
 						completeUnimported = true,
@@ -181,25 +135,23 @@ return {
 			lspconfig.terraformls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				single_file_support = false,
 			})
 
 			lspconfig.ts_ls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				single_file_support = false,
 			})
 
 			lspconfig.dockerls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				single_file_support = false,
+				filetypes = { "Dockerfile", "dockerfile", "Dockerfile-*" },
+				root_dir = lspconfig.util.root_pattern(".git", "."),
 			})
 
 			lspconfig.bashls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				single_file_support = false,
 			})
 		end,
 	},
