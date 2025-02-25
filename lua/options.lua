@@ -4,6 +4,9 @@ vim.g.background = "light"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Hide cmdline
+vim.opt.cmdheight = 0
+
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
