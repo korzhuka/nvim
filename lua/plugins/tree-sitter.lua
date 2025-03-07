@@ -12,26 +12,29 @@ return {
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
-				textobjects = {
-					move = {
-						enable = true,
-						set_jumps = true,
-						goto_next_start = {
-							["]m"] = { query = "@function.outer", desc = "Navigation: Next function" },
-							["]M"] = { query = "@function.inner", desc = "Navigation: Next function in" },
-							["]]"] = { query = "@class.outer", desc = "Navigation: Next class start" },
-							["]z"] = { query = "@fold", query_group = "folds", desc = "Navigation: Next fold" },
-							["]a"] = { query = "@parameter.inner", desc = "Navigation: Next parameter" },
-						},
-						goto_previous_start = {
-							["[m"] = { query = "@function.outer", desc = "Navigation: Prev function" },
-							["[["] = { query = "@class.outer", desc = "Navigation: Prev class start" },
-							["[z"] = { query = "@fold", query_group = "folds", desc = "Navigation: Prev fold" },
-							["[a"] = { query = "@parameter.inner", desc = "Navigation: Prev parameter" },
-						},
-					},
-				},
 			})
+		end,
+	},
+	{
+		"aaronik/treewalker.nvim",
+		config = function()
+			require("treewalker").setup({
+				highlight = true,
+				highlight_duration = 250,
+				highlight_group = "CursorLine",
+			})
+
+			-- movement
+			vim.keymap.set({ "n", "v" }, "<C-k>", "<cmd>Treewalker Up<cr>", { silent = true })
+			vim.keymap.set({ "n", "v" }, "<C-j>", "<cmd>Treewalker Down<cr>", { silent = true })
+			vim.keymap.set({ "n", "v" }, "<C-h>", "<cmd>Treewalker Left<cr>", { silent = true })
+			vim.keymap.set({ "n", "v" }, "<C-l>", "<cmd>Treewalker Right<cr>", { silent = true })
+
+			-- swapping
+			vim.keymap.set("n", "<C-S-k>", "<cmd>Treewalker SwapUp<cr>", { silent = true })
+			vim.keymap.set("n", "<C-S-j>", "<cmd>Treewalker SwapDown<cr>", { silent = true })
+			vim.keymap.set("n", "<C-S-h>", "<cmd>Treewalker SwapLeft<cr>", { silent = true })
+			vim.keymap.set("n", "<C-S-l>", "<cmd>Treewalker SwapRight<cr>", { silent = true })
 		end,
 	},
 }
