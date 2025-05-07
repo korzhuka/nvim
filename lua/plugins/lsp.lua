@@ -1,6 +1,7 @@
 return {
 	{
 		"williamboman/mason.nvim",
+		version = "~1.0.0",
 		lazy = false,
 		config = function()
 			require("mason").setup()
@@ -8,6 +9,7 @@ return {
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
+		version = "~1.0.0",
 		lazy = false,
 		opts = {
 			auto_install = true,
@@ -22,6 +24,7 @@ return {
 				"bashls",
 				"ltex",
 			},
+			automatic_installation = true,
 		},
 	},
 	{
@@ -52,7 +55,7 @@ return {
 					if mode == nil then
 						mode = "n"
 					end
-					vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+					vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = "LSP: " .. desc, silent = true })
 				end
 
 				map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
@@ -64,6 +67,8 @@ return {
 
 				map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", "v")
+
 				map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 				map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
@@ -116,7 +121,7 @@ return {
 			lspconfig.gopls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				root_dir = lspconfig.util.root_pattern("go.mod", ".git", "."),
+				root_dir = lspconfig.util.root_pattern(".git", "go.mod", "."),
 				settings = {
 					gopls = {
 						completeUnimported = true,
