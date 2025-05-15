@@ -31,7 +31,6 @@ return {
 		"antosha417/nvim-lsp-file-operations",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-tree.lua",
 		},
 		config = function()
 			require("lsp-file-operations").setup()
@@ -70,8 +69,8 @@ return {
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", "v")
 
 				map("K", vim.lsp.buf.hover, "Hover Documentation")
-
 				map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
+				map("<C-k>", vim.lsp.buf.signature_help, "Signature help")
 			end
 
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })

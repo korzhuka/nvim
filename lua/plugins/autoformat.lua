@@ -14,17 +14,21 @@ return {
 		},
 	},
 	opts = {
+		default_format_opts = {
+			lsp_format = "fallback",
+		},
 		format_on_save = {
-			lsp_fallback = true,
+			timeout_ms = 500,
+			lsp_format = "fallback",
 		},
 		formatters_by_ft = {
 			lua = { "stylua" },
 			-- yaml = { "prettier" },
 			go = { "goimports" },
 			javascript = { "prettier" },
-			-- markdown = { "prettier" },
+			markdown = { "prettier" },
 
-			["_"] = { "trim_whitespace" },
+			["_"] = { "trim_whitespace", "trim_newlines" },
 		},
 		formatters = {
 			prettier = {
