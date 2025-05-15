@@ -20,6 +20,11 @@ return {
 			}
 
 			require("telescope").setup({
+				defaults = {
+					path_display = function(opts, path)
+						return path:gsub("^%./", "") -- removes leading './'
+					end,
+				},
 				pickers = {
 					live_grep = {
 						file_ignore_patterns = ignore_list,
