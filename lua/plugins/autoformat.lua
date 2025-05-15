@@ -2,17 +2,6 @@ return {
 	-- Autoformat
 	"stevearc/conform.nvim",
 	lazy = false,
-	keys = {
-		{
-			"<leader>f",
-			function()
-				require("conform").format({
-					lsp_fallback = true,
-				})
-			end,
-			desc = "[F]ormat buffer",
-		},
-	},
 	opts = {
 		default_format_opts = {
 			lsp_format = "fallback",
@@ -32,20 +21,8 @@ return {
 		},
 		formatters = {
 			prettier = {
-				args = {
-					"--stdin-filepath",
-					"$FILENAME",
-					"--single-quote",
-				},
+				args = { "--stdin-filepath", "$FILENAME", "--single-quote" },
 			},
 		},
 	},
-	on_init = function()
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = "*",
-			callback = function(args)
-				require("conform").format({ bufnr = args.buf })
-			end,
-		})
-	end,
 }
