@@ -12,11 +12,12 @@ return {
 			set("<M-]>", "copilot-next", "Cycle to the next suggestion, if one is available.")
 			set("<M-[>", "copilot-previous", "Cycle to the previous suggestion.")
 
-			set("<M-aw>", "copilot-accept-word", "Accept the next word of the current suggestion.")
+			set("<M-w>", "copilot-accept-word", "Accept the next word of the current suggestion.")
 			set("<M-l>", "copilot-accept-line", "Accept the next line of the current suggestion.")
 		end,
 	},
 	{
+		enabled = false,
 		"CopilotC-Nvim/CopilotChat.nvim",
 		dependencies = {
 			{ "github/copilot.vim" },
