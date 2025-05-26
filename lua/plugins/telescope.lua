@@ -4,7 +4,6 @@ return {
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.5",
 		dependencies = {
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 			{ "nvim-telescope/telescope-ui-select.nvim" },
@@ -18,31 +17,6 @@ return {
 				".idea/",
 				".DS_Store/",
 			}
-
-			require("telescope").setup({
-				defaults = {
-					path_display = function(opts, path)
-						return path:gsub("^%./", "") -- removes leading './'
-					end,
-				},
-				pickers = {
-					live_grep = {
-						file_ignore_patterns = ignore_list,
-					},
-					find_files = {
-						file_ignore_patterns = ignore_list,
-						hidden = true,
-					},
-				},
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown({}),
-					},
-				},
-			})
-
-			pcall(require("telescope").load_extension, "fzf")
-			pcall(require("telescope").load_extension, "ui-select")
 
 			local function find_git_root()
 				-- Use the current buffer's path as the starting point for the git search
@@ -66,6 +40,44 @@ return {
 				end
 				return git_root
 			end
+
+			require("telescope").setup({
+				defaults = {
+					-- path_display = { "smart" },
+					cwd = find_git_root(),
+					-- path_display = function(opts, path)
+					-- 	return path:gsub("^%../", "") -- removes leading './'
+					-- end,
+					vimgrep_arguments = {
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--ignore-case",
+						"--hidden",
+					},
+				},
+				pickers = {
+					live_grep = {
+						file_ignore_patterns = ignore_list,
+						hidden = true,
+					},
+					find_files = {
+						file_ignore_patterns = ignore_list,
+						hidden = true,
+					},
+				},
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({}),
+					},
+				},
+			})
+			pcall(require("telescope").load_extension, "fzf")
+
+			pcall(require("telescope").load_extension, "ui-select")
 
 			-- Custom live_grep function to search in git root
 			local function live_grep_git_root()
