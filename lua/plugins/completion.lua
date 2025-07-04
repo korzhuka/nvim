@@ -3,11 +3,8 @@ return {
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-			{
-				"L3MON4D3/LuaSnip",
-				build = "make install_jsregexp",
-				dependencies = {},
-			},
+			{ "L3MON4D3/LuaSnip", build = "make install_jsregexp", dependencies = {} },
+			{ "samiulsami/cmp-go-deep", dependencies = { "kkharji/sqlite.lua" } },
 			"saadparwaiz1/cmp_luasnip",
 
 			"hrsh7th/cmp-nvim-lsp",
@@ -52,6 +49,16 @@ return {
 				}),
 
 				sources = {
+					sources = {
+						{
+							name = "go_deep",
+							keyword_length = 3,
+							max_item_count = 5,
+							---@module "cmp_go_deep"
+							---@type cmp_go_deep.Options
+							option = {},
+						},
+					},
 					{ name = "nvim_lsp" },
 					{ name = "nvim_lsp_signature_help" },
 					{ name = "path" },
