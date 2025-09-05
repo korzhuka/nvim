@@ -8,9 +8,8 @@ return {
 			require("typewriter").setup({
 				enable_horizontal_scroll = false,
 				enable_notifications = false,
+				start_enabled = false,
 			})
-
-			require("typewriter.commands").enable_typewriter_mode()
 		end,
 	},
 }
