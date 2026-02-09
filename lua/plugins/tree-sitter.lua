@@ -7,9 +7,10 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
-			-- Add parser directory to runtimepath
-			local parser_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter"
-			vim.opt.runtimepath:prepend(parser_dir)
+			-- Configure to install parsers to standard location
+			require("nvim-treesitter").setup({
+				install_dir = vim.fn.stdpath("data") .. "/site",
+			})
 
 			-- Install required parsers (new API - no ensure_installed)
 			local parsers = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" }
