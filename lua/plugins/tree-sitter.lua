@@ -15,6 +15,17 @@ return {
 			-- Install required parsers (new API - no ensure_installed)
 			local parsers = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" }
 			require("nvim-treesitter").install(parsers)
+
+			-- Enable treesitter highlighting (using built-in Neovim API)
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "*",
+				callback = function()
+					if not pcall(vim.treesitter.start) then
+						-- Fallback if treesitter.start doesn't work
+						vim.treesitter.highlighter.new(vim.treesitter.get_parser())
+					end
+				end,
+			})
 		end,
 	},
 	{
