@@ -8,7 +8,7 @@ return {
 		config = function()
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter").setup({
-				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl" },
+				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
