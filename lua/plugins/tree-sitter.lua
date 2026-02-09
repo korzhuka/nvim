@@ -7,20 +7,12 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
-			-- Configure parser install directory
-			local parser_dir = vim.fn.stdpath("data") .. "/site"
-			vim.fn.mkdir(parser_dir .. "/parser", "p")
-
 			require("nvim-treesitter.configs").setup({
-				parser_install_dir = parser_dir,
-				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
+				parser_install_dir = vim.fn.stdpath("data") .. "/site",
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
 			})
-
-			-- Add parser directory to runtimepath
-			vim.opt.runtimepath:prepend(parser_dir)
 		end,
 	},
 	{
