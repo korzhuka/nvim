@@ -21,7 +21,7 @@ return {
 				"lua_ls",
 				"pyright",
 				"terraformls",
-				"ts_ls",
+				"tsserver",
 				"yamlls",
 				"bashls",
 				"ltex",
