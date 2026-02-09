@@ -10,6 +10,7 @@ return {
 				triggers = {
 					{ "<leader>", mode = { "n" } },
 				},
+				delay = 200, -- Reduce delay to make double-press more responsive
 			})
 		end,
 	},

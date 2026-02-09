@@ -1,6 +1,7 @@
 return {
 	{
 		"joshuadanpeterson/typewriter",
+		enabled = false, -- Disabled: incompatible with Neovim 0.11 (requires deprecated nvim-treesitter.ts_utils)
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 		},

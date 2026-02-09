@@ -35,7 +35,7 @@ return {
 				local git_root =
 					vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
 				if vim.v.shell_error ~= 0 then
-					print("Not a git repository. Searching on current working directory")
+					vim.notify("Not a git repository. Searching in current directory", vim.log.levels.INFO)
 					return cwd
 				end
 				return git_root

@@ -4,7 +4,7 @@ return {
 	opts = {
 		modes = {
 			search = {
-				enabled = true,
+				enabled = true, -- Enable flash on both / and ? - maintains n/N functionality
 				highlight = { backdrop = true },
 			},
 			char = {

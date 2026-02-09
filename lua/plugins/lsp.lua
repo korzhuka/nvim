@@ -19,7 +19,9 @@ return {
 				"jsonls",
 				"helm_ls",
 				"lua_ls",
+				"pyright",
 				"terraformls",
+				"ts_ls",
 				"yamlls",
 				"bashls",
 				"ltex",
@@ -79,19 +81,27 @@ return {
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-			local lspconfig = require("lspconfig")
-
-			lspconfig.lua_ls.setup({
+			-- Use the new vim.lsp.config API for Neovim 0.11+
+			vim.lsp.config("lua_ls", {
+				cmd = { "lua-language-server" },
+				filetypes = { "lua" },
+				root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 
-			lspconfig.ltex.setup({
+			vim.lsp.config("ltex", {
+				cmd = { "ltex-ls" },
+				filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex", "pandoc", "quarto", "rmd", "context", "html", "xhtml", "mail", "text" },
+				root_markers = { ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 
-			lspconfig.yamlls.setup({
+			vim.lsp.config("yamlls", {
+				cmd = { "yaml-language-server", "--stdio" },
+				filetypes = { "yaml" },
+				root_markers = { ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 				settings = {
@@ -100,7 +110,6 @@ return {
 						completion = true,
 						hover = true,
 						validate = true,
-						-- Formatting doesn't work
 						format = {
 							enable = true,
 							singleQuote = true,
@@ -117,10 +126,12 @@ return {
 				},
 			})
 
-			lspconfig.gopls.setup({
+			vim.lsp.config("gopls", {
+				cmd = { "gopls" },
+				filetypes = { "go", "gomod" },
+				root_markers = { "go.work", "go.mod", ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
-				root_dir = lspconfig.util.root_pattern(".git", "go.mod", "."),
 				settings = {
 					gopls = {
 						completeUnimported = true,
@@ -136,27 +147,65 @@ return {
 				},
 			})
 
-			lspconfig.terraformls.setup({
+			vim.lsp.config("terraformls", {
+				cmd = { "terraform-ls", "serve" },
+				filetypes = { "terraform" },
+				root_markers = { ".terraform", ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 
-			lspconfig.ts_ls.setup({
+			vim.lsp.config("ts_ls", {
+				cmd = { "typescript-language-server", "--stdio" },
+				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+				root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 
-			lspconfig.dockerls.setup({
+			vim.lsp.config("dockerls", {
+				cmd = { "docker-langserver", "--stdio" },
+				filetypes = { "dockerfile" },
+				root_markers = { ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
-				filetypes = { "Dockerfile", "dockerfile", "Dockerfile-*" },
-				root_dir = lspconfig.util.root_pattern(".git", "."),
 			})
 
-			lspconfig.bashls.setup({
+			vim.lsp.config("bashls", {
+				cmd = { "bash-language-server", "start" },
+				filetypes = { "sh", "bash" },
+				root_markers = { ".git" },
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
+
+			vim.lsp.config("pyright", {
+				cmd = { "pyright-langserver", "--stdio" },
+				filetypes = { "python" },
+				root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
+				on_attach = on_attach,
+				capabilities = capabilities,
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "workspace",
+						},
+					},
+				},
+			})
+
+			-- Enable all configured LSP servers
+			vim.lsp.enable("lua_ls")
+			vim.lsp.enable("ltex")
+			vim.lsp.enable("yamlls")
+			vim.lsp.enable("gopls")
+			vim.lsp.enable("terraformls")
+			vim.lsp.enable("ts_ls")
+			vim.lsp.enable("dockerls")
+			vim.lsp.enable("bashls")
+			vim.lsp.enable("pyright")
 		end,
 	},
 }
