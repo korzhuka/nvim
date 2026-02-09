@@ -18,12 +18,9 @@ return {
 
 			-- Enable treesitter highlighting (using built-in Neovim API)
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "*",
+				pattern = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
 				callback = function()
-					if not pcall(vim.treesitter.start) then
-						-- Fallback if treesitter.start doesn't work
-						vim.treesitter.highlighter.new(vim.treesitter.get_parser())
-					end
+					pcall(vim.treesitter.start)
 				end,
 			})
 		end,
