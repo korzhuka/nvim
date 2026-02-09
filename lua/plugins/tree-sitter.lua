@@ -1,27 +1,17 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		lazy = false,
+		tag = "v0.10.0",
 		build = ":TSUpdate",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
-			-- Configure to install parsers to standard location
-			require("nvim-treesitter").setup({
-				install_dir = vim.fn.stdpath("data") .. "/site",
-			})
-
-			-- Install required parsers (new API - no ensure_installed)
-			local parsers = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" }
-			require("nvim-treesitter").install(parsers)
-
-			-- Enable treesitter highlighting (using built-in Neovim API)
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
-				callback = function()
-					pcall(vim.treesitter.start)
-				end,
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
+				auto_install = true,
+				highlight = { enable = true },
+				indent = { enable = true },
 			})
 		end,
 	},
