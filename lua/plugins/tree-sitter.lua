@@ -1,19 +1,14 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		tag = "v0.10.0",
 		build = ":TSUpdate",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
-			-- Set explicit parser install directory
-			local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter"
-			vim.fn.mkdir(parser_install_dir, "p")
-			vim.opt.runtimepath:append(parser_install_dir)
-
 			---@diagnostic disable-next-line: missing-fields
-			require("nvim-treesitter").setup({
-				install_dir = parser_install_dir,
+			require("nvim-treesitter.configs").setup({
 				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
 				auto_install = true,
 				highlight = { enable = true },
