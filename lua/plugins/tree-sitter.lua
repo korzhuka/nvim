@@ -1,19 +1,15 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		tag = "v0.10.0",
+		lazy = false,
 		build = ":TSUpdate",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		config = function()
-			---@diagnostic disable-next-line: missing-fields
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
-				auto_install = true,
-				highlight = { enable = true },
-				indent = { enable = true },
-			})
+			-- Install required parsers (new API - no ensure_installed)
+			local parsers = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" }
+			require("nvim-treesitter").install(parsers)
 		end,
 	},
 	{
