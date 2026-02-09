@@ -9,6 +9,7 @@ return {
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				parser_install_dir = vim.fn.stdpath("data") .. "/site",
+				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
