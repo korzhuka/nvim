@@ -11,6 +11,11 @@ return {
 		config = function()
 			require("lualine").setup({
 				theme = "catppuccin-mocha",
+				options = {
+					disabled_filetypes = {
+						statusline = { "claude-code" },
+					},
+				},
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = { "branch", "diff", "diagnostics" },
