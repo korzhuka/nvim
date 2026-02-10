@@ -13,7 +13,7 @@ return {
 				theme = "catppuccin-mocha",
 				options = {
 					disabled_filetypes = {
-						statusline = { "claude-code", "" },
+						statusline = { "claude-code" },
 					},
 				},
 				sections = {
