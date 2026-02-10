@@ -7,6 +7,31 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- Set filetype for Claude Code buffers
+vim.api.nvim_create_autocmd({ "BufEnter", "TermOpen" }, {
+	desc = "Set filetype for Claude Code buffers",
+	group = vim.api.nvim_create_augroup("claude-code-filetype", { clear = true }),
+	callback = function()
+		local term_title = vim.b.term_title
+		if term_title and term_title:match("Claude Code") then
+			vim.bo.filetype = "claude-code"
+		end
+	end,
+})
+
+-- Hide statusline for Claude Code windows
+vim.api.nvim_create_autocmd("WinEnter", {
+	desc = "Hide statusline for Claude Code windows",
+	group = vim.api.nvim_create_augroup("claude-code-hide-statusline", { clear = true }),
+	callback = function()
+		if vim.bo.filetype == "claude-code" then
+			vim.opt_local.laststatus = 0
+		else
+			vim.opt_local.laststatus = 3
+		end
+	end,
+})
+
 -- -- General/Global LSP Configuration
 -- local api = vim.api
 -- local lsp = vim.lsp
