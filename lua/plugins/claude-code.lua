@@ -8,7 +8,7 @@ return {
 			require("claude-code").setup({
 				window = {
 					position = "vertical",
-					split_ratio = 0.35
+					split_ratio = 0.35,
 				},
 			})
 		end,
