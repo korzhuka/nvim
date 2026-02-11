@@ -11,6 +11,11 @@ return {
 					split_ratio = 0.35,
 				},
 			})
+
+			-- Switch focus to Claude Code window
+			vim.schedule(function()
+				vim.cmd [[ClaudeCodeContinue]]
+			end)
 		end,
 	},
 }
