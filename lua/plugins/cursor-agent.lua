@@ -21,9 +21,23 @@ local function toggle_agent(name, cmd)
 	end
 end
 
+local function visual_range()
+	-- '< and '> are only updated on visual-mode exit, so when this runs
+	-- inline (still in visual mode) read live positions instead.
+	local mode = vim.fn.mode()
+	if mode == "v" or mode == "V" or mode == "\22" then
+		local s = vim.fn.getpos("v")[2]
+		local e = vim.fn.getpos(".")[2]
+		if s > e then
+			s, e = e, s
+		end
+		return s, e
+	end
+	return vim.fn.line("'<"), vim.fn.line("'>")
+end
+
 local function ask_selection()
-	local start_line = vim.fn.line("'<")
-	local end_line = vim.fn.line("'>")
+	local start_line, end_line = visual_range()
 	local file = vim.fn.expand("%:.")
 	if file == "" then
 		vim.notify("Cursor agent: current buffer has no file path", vim.log.levels.WARN)
