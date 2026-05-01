@@ -1,7 +1,7 @@
 local terms = {}
 
 local function vertical_size()
-	return math.floor(vim.o.columns * 0.35)
+	return math.max(80, math.floor(vim.o.columns * 0.4))
 end
 
 local function toggle_agent(name, cmd)
