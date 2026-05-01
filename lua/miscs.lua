@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
+		(vim.hl or vim.highlight).on_yank()
 	end,
 })
 
@@ -28,4 +28,14 @@ vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
 	desc = "Update terminal title with git root directory",
 	group = vim.api.nvim_create_augroup("terminal-title", { clear = true }),
 	callback = update_title,
+})
+
+-- Enable spellcheck only for prose filetypes
+vim.api.nvim_create_autocmd("FileType", {
+	desc = "Enable spell for prose filetypes",
+	group = vim.api.nvim_create_augroup("prose-spell", { clear = true }),
+	pattern = { "markdown", "gitcommit", "text", "tex", "rst" },
+	callback = function()
+		vim.opt_local.spell = true
+	end,
 })
