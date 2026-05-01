@@ -1,8 +1,5 @@
 return {
 	{
-		"nvim-telescope/telescope-ui-select.nvim",
-	},
-	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -43,11 +40,7 @@ return {
 
 			require("telescope").setup({
 				defaults = {
-					-- path_display = { "smart" },
-					cwd = find_git_root(),
-					-- path_display = function(opts, path)
-					-- 	return path:gsub("^%../", "") -- removes leading './'
-					-- end,
+					preview = { treesitter = false },
 					vimgrep_arguments = {
 						"rg",
 						"--color=never",
