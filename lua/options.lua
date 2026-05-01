@@ -17,6 +17,10 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.showmode = false
 vim.opt.swapfile = false
 
+-- Global statusline. Recommended by avante.nvim so the sidebar
+-- doesn't introduce per-window statuslines that fragment the layout.
+vim.opt.laststatus = 3
+
 -- Tabs
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
