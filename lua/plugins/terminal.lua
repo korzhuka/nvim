@@ -5,6 +5,7 @@ return {
 		require("toggleterm").setup({
 			mode = "n",
 			insert_mappings = false,
+			terminal_mappings = false,
 			open_mapping = "<leader>tt",
 			direction = "float",
 			size = function(term)
