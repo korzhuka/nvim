@@ -12,10 +12,8 @@ return {
 				},
 			})
 
-			-- Switch focus to Claude Code window
-			vim.schedule(function()
-				vim.cmd [[ClaudeCodeContinue]]
-			end)
+			vim.keymap.set("n", "<leader>cc", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude Code" })
+			vim.keymap.set("n", "<leader>cr", "<cmd>ClaudeCodeContinue<cr>", { desc = "Resume Claude Code" })
 		end,
 	},
 }
