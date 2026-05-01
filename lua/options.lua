@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-vim.g.background = "light"
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -8,7 +7,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.cmdheight = 0
 
 vim.opt.spelllang = "en_us"
-vim.opt.spell = true
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
@@ -20,9 +18,10 @@ vim.opt.showmode = false
 vim.opt.swapfile = false
 
 -- Tabs
-vim.o.shiftwidth = 4
-vim.o.tabstop = 4
-vim.o.softtabstop = 0
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 0
+vim.opt.expandtab = true
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -97,4 +96,4 @@ vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
-vim.keymap.set("n", "<leader>nt", "<cmd>tabNext<CR>", { desc = "New tab" })
+vim.keymap.set("n", "<leader>nt", "<cmd>tabNext<CR>", { desc = "Next tab" })
