@@ -106,14 +106,14 @@ return {
 		config = function()
 			require("diffview").setup({})
 
-			local open = true
+			local open = false
 			vim.keymap.set("n", "<leader>d", function()
 				if open then
 					open = false
-					vim.cmd("silent DiffviewOpen")
+					vim.cmd("silent DiffviewClose")
 				else
 					open = true
-					vim.cmd("silent DiffviewClose")
+					vim.cmd("silent DiffviewOpen")
 				end
 			end, { desc = "Toggle [D]iffview" })
 		end,
