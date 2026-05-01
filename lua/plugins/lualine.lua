@@ -10,7 +10,9 @@ return {
 		},
 		config = function()
 			require("lualine").setup({
-				theme = "catppuccin-mocha",
+				options = {
+					theme = "catppuccin-mocha",
+				},
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = { "branch", "diff", "diagnostics" },
