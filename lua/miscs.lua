@@ -39,3 +39,19 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.spell = true
 	end,
 })
+
+-- Strip slow per-keystroke UI features from terminal buffers
+vim.api.nvim_create_autocmd("TermOpen", {
+	desc = "Make terminal buffers fast and minimal",
+	group = vim.api.nvim_create_augroup("term-tweaks", { clear = true }),
+	callback = function()
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.signcolumn = "no"
+		vim.opt_local.cursorline = false
+		vim.opt_local.list = false
+		vim.opt_local.spell = false
+		vim.opt_local.scrolloff = 0
+		vim.opt_local.sidescrolloff = 0
+	end,
+})
