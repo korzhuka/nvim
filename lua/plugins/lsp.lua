@@ -10,7 +10,6 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
 		opts = {
-			auto_install = true,
 			ensure_installed = {
 				"dockerls",
 				"gopls",
@@ -19,12 +18,11 @@ return {
 				"lua_ls",
 				"pyright",
 				"terraformls",
-				"tsserver",
+				"ts_ls",
 				"yamlls",
 				"bashls",
 				"ltex",
 			},
-			automatic_installation = true,
 		},
 	},
 	{
@@ -37,7 +35,13 @@ return {
 		end,
 	},
 	{
-		"j-hui/fidget.nvim",
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -45,8 +49,8 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			"folke/neodev.nvim",
+			"folke/lazydev.nvim",
+			"saghen/blink.cmp",
 		},
 		config = function()
 			local on_attach = function(_, bufnr)
@@ -70,14 +74,12 @@ return {
 
 				map("K", vim.lsp.buf.hover, "Hover Documentation")
 				map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
-				map("<C-k>", vim.lsp.buf.signature_help, "Signature help")
 			end
 
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 			vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			-- Use the new vim.lsp.config API for Neovim 0.11+
 			vim.lsp.config("lua_ls", {
@@ -194,6 +196,22 @@ return {
 				},
 			})
 
+			vim.lsp.config("jsonls", {
+				cmd = { "vscode-json-language-server", "--stdio" },
+				filetypes = { "json", "jsonc" },
+				root_markers = { ".git" },
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
+			vim.lsp.config("helm_ls", {
+				cmd = { "helm_ls", "serve" },
+				filetypes = { "helm" },
+				root_markers = { "Chart.yaml", "Chart.yml" },
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
 			-- Enable all configured LSP servers
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("ltex")
@@ -204,6 +222,8 @@ return {
 			vim.lsp.enable("dockerls")
 			vim.lsp.enable("bashls")
 			vim.lsp.enable("pyright")
+			vim.lsp.enable("jsonls")
+			vim.lsp.enable("helm_ls")
 		end,
 	},
 }
