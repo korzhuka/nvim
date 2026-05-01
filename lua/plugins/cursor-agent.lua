@@ -6,12 +6,15 @@ end
 
 local function toggle_agent(name, cmd)
 	return function()
+		if terms[name] and not vim.api.nvim_buf_is_valid(terms[name].bufnr or -1) then
+			terms[name] = nil
+		end
 		if not terms[name] then
 			terms[name] = require("toggleterm.terminal").Terminal:new({
 				cmd = cmd,
 				direction = "vertical",
 				size = vertical_size,
-				close_on_exit = false,
+				close_on_exit = true,
 				on_open = function()
 					vim.cmd("startinsert!")
 				end,
@@ -53,7 +56,7 @@ local function ask_selection()
 			cmd = "agent " .. vim.fn.shellescape(full_prompt),
 			direction = "vertical",
 			size = vertical_size,
-			close_on_exit = false,
+			close_on_exit = true,
 			on_open = function()
 				vim.cmd("startinsert!")
 			end,
