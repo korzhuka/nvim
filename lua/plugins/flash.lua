@@ -1,16 +1,34 @@
 return {
 	"folke/flash.nvim",
 	event = "VeryLazy",
+	---@type Flash.Config
 	opts = {
+		labels = "asdfghjklqwertyuiop",
+		label = {
+			uppercase = false,
+			rainbow = { enabled = true, shade = 5 },
+		},
+		jump = {
+			autojump = true,
+			nohlsearch = true,
+		},
+		prompt = {
+			enabled = true,
+		},
 		modes = {
 			search = {
-				enabled = true, -- Enable flash on both / and ? - maintains n/N functionality
-				highlight = { backdrop = true },
+				enabled = false,
 			},
 			char = {
-				autohide = true,
+				enabled = true,
+				jump_labels = true,
+				autohide = false,
 				highlight = { backdrop = false },
 			},
 		},
+	},
+	keys = {
+		{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+		{ "<C-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
 	},
 }
