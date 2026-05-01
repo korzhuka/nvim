@@ -46,6 +46,10 @@ vim.opt.updatetime = 150
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 500
+-- Terminal key code timeout. Without an explicit value this inherits
+-- timeoutlen, which causes 500ms lag on every Esc / arrow key inside
+-- :terminal buffers.
+vim.opt.ttimeoutlen = 10
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true

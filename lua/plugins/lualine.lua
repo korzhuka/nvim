@@ -12,6 +12,10 @@ return {
 			require("lualine").setup({
 				options = {
 					theme = "catppuccin-mocha",
+					disabled_filetypes = {
+						statusline = { "toggleterm", "Avante", "AvanteInput", "AvanteSelectedFiles" },
+						winbar = { "toggleterm", "Avante", "AvanteInput", "AvanteSelectedFiles" },
+					},
 				},
 				sections = {
 					lualine_a = { "mode" },
