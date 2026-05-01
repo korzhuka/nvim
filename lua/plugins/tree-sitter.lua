@@ -1,18 +1,23 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		tag = "v0.10.0",
+		branch = "main",
+		lazy = false,
 		build = ":TSUpdate",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-		},
 		config = function()
-			require("nvim-treesitter.configs").setup({
-				parser_install_dir = vim.fn.stdpath("data") .. "/site",
-				ensure_installed = { "go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile" },
-				auto_install = true,
-				highlight = { enable = true },
-				indent = { enable = true },
+			require("nvim-treesitter").install({
+				"go", "lua", "yaml", "terraform", "hcl", "python", "dockerfile", "bash", "json",
+				"markdown", "markdown_inline", "vim", "vimdoc", "query",
+			})
+
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
+				callback = function(args)
+					local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+					if lang and pcall(vim.treesitter.language.add, lang) then
+						pcall(vim.treesitter.start, args.buf, lang)
+					end
+				end,
 			})
 		end,
 	},
